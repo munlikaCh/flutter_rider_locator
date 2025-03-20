@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Version 1.0.0] : 2025-03-18
+## [Version 1.0.1+1] : 2025-03-20
+### 🛠️ Changed
+- 🔄 Fixed **LICENSE** issue by updating the license details.
+
+### 🐞 Fixed
+- 🐛 Resolved **bug** and **formatting issues**
+
+## [Version 1.0.0] : 2025-03-19
 ### 🎉 Initial Release
 - 🚀 Introduced **Flutter Rider Locator (basic)** package.
 - 🗺️ Integrated **Google Maps** for navigation and real-time tracking.

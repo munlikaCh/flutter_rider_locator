@@ -1,6 +1,6 @@
 name: flutter_rider_locator
 description: "A Flutter package to simulate rider and nearby stores/customers in a 10km range."
-version: 1.0.0
+version: 1.0.1+1
 
 # author: Munlika Chaipradit
 homepage: https://github.com/munlikaCh/flutter_rider_locator
