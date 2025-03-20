@@ -684,11 +684,6 @@ class _StoreFinderState extends State<StoreFinder> {
 
                                     // ตรวจสอบว่า acceptedOrders มีข้อมูลหรือไม่
                                     if (acceptedOrders.isNotEmpty) {
-                                      LatLng customerLocation = LatLng(
-                                        acceptedOrders.first['customerLatitude'] ??
-                                            0.0, // กำหนดค่าเริ่มต้นเพื่อป้องกัน null
-                                        acceptedOrders.first['customerLongitude'] ?? 0.0,
-                                      );
                                     } else {
                                       logger.e("❌ ไม่มี order ที่ถูก accept");
                                       ScaffoldMessenger.of(
@@ -755,97 +750,6 @@ class _StoreFinderState extends State<StoreFinder> {
     );
   }
 
-  void _showRiderSelectionDialog(List<Map<String, dynamic>> riders, List<Map<String, dynamic>> stores) {
-    // กรอง rider by use ชื่อ, ระยะทาง
-    var uniqueRiders = <String, Map<String, dynamic>>{};
-
-    for (var rider in riders) {
-      // check ไรเดอร์ ว่า ready + active and อยู่ในระยะ 10 กม.
-      if (rider['ready'] == true && rider['active'] == true) {
-        // คำนวณระยะห่าง btw ตำแหน่งของลูกค้า->ไรเดอร์
-        double distance = _calculateDistance(
-          currentPosition!.latitude,
-          currentPosition!.longitude,
-          rider['latitude'],
-          rider['longitude'],
-        );
-
-        if (distance <= 10) {
-          // check ชื่อซ้ำ rider
-          if (uniqueRiders.containsKey(rider['name'])) {
-            // if have ให้เลือกเฉพาะระยะทางที่ใกล้ที่สุด
-            if (distance < uniqueRiders[rider['name']]!['distance']) {
-              uniqueRiders[rider['name']] = {...rider, "distance": distance}; // ใช้ข้อมูลระยะทางที่ใกล้ที่สุด
-            }
-          } else {
-            uniqueRiders[rider['name']] = {...rider, "distance": distance}; // เพิ่มไรเดอร์ใหม่
-          }
-        }
-      }
-    }
-
-    // แปลงข้อมูลจาก Map กลับไปเป็น List
-    riders = uniqueRiders.values.toList();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        Map<String, dynamic>? selectedRider;
-
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text("Select Rider"),
-              content: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...riders.map((rider) {
-                      return CheckboxListTile(
-                        title: Text(rider["name"]),
-                        subtitle: Text("ระยะทางจากลูกค้า: ${rider["distance"].toStringAsFixed(2)} km"),
-                        value: selectedRider == rider, // ถ้า selectedRider = rider = ถูกเลือก
-                        onChanged: (bool? value) {
-                          setState(() {
-                            // เมื่อเลือกไรเดอร์ จะอัปเดต selectedRider ให้เป็นตัวที่เลือก
-                            selectedRider = value == true ? rider : null;
-                            isRiderSelected = selectedRider != null;
-                            debugPrint('Selected Rider: $selectedRider');
-                            logger.i('isRiderSelected: $isRiderSelected');
-                          });
-                        },
-                      );
-                    })
-                    // .toList(),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Close"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (selectedRider != null) {
-                      Navigator.of(context).pop();
-                      _assignOrderToRiderConfirmed(selectedRider!, stores);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("กรุณาเลือกไรเดอร์")));
-                    }
-                  },
-                  child: Text("Okey"),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
   void _goToCurrentLocation() {
     if (currentPosition != null && mapController != null) {
       mapController!.animateCamera(
@@ -854,24 +758,6 @@ class _StoreFinderState extends State<StoreFinder> {
         ),
       );
     }
-  }
-
-  void _sendOrderToStores(List<Map<String, dynamic>> orders) {
-    for (var order in orders) {
-      // ค้นหาร้านที่ตรงกับชื่อร้านใน order
-      var store = nearbyStores.firstWhere((store) => store["name"] == order["storeName"]);
-      // เพิ่ม order เข้าไปใน list order ของร้าน
-      if (store["orders"] == null) {
-        store["orders"] = [];
-      }
-      store["orders"].add(order);
-
-      //log - check รายละเอียด order เสยๆ
-      debugPrint("Order ID: ${order["orderId"]} has been sent to ${store["name"]}");
-      debugPrint("Order Details: ${order.toString()}");
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Order has been sent to the selected stores.")));
   }
 
   void _showOrderNotifications() {
