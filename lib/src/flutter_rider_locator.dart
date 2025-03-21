@@ -16,6 +16,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: StoreFinder());
@@ -39,8 +41,8 @@ class _StoreFinderState extends State<StoreFinder> {
   //เก็บค่า
   List<Map<String, dynamic>> nearbyStores = [];
   List<Map<String, dynamic>> nearbyDrivers = [];
-  List<Map<String, dynamic>> _selectedOrderStores = [];
-  List<Map<String, dynamic>> _newOrders = [];
+  final List<Map<String, dynamic>> _selectedOrderStores = [];
+  final List<Map<String, dynamic>> _newOrders = [];
 
   int _notificationCount = 0;
 
