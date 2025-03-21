@@ -76,16 +76,21 @@ class _StoreFinderState extends State<StoreFinder> {
 
   void _assignOrderToCustomer() {
     if (initialCustomer.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("ไม่มีลูกค้าในระบบ")));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("ไม่มีลูกค้าในระบบ")));
       return;
     }
     if (initialStores.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("ไม่มีร้านในระบบ")));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("ไม่มีร้านในระบบ")));
       return;
     }
 
     // เลือกร้านจากที่สุ่ม
-    Map<String, dynamic> selectedStore = initialStores[Random().nextInt(initialStores.length)];
+    Map<String, dynamic> selectedStore =
+        initialStores[Random().nextInt(initialStores.length)];
 
     showDialog(
       context: context,
@@ -114,11 +119,16 @@ class _StoreFinderState extends State<StoreFinder> {
                 ),
               ),
               actions: [
-                TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Cancel")),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text("Cancel"),
+                ),
                 TextButton(
                   onPressed: () {
                     if (selectedCustomer == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("กรุณาเลือกลูกค้า")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("กรุณาเลือกลูกค้า")),
+                      );
                     } else {
                       // สร้างคำสั่ง mock สำหรับร้านที่เลือก
                       double distanceFromRider =
@@ -161,9 +171,13 @@ class _StoreFinderState extends State<StoreFinder> {
                         _notificationCount++;
                       });
 
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text("Order ได้ถูกเพิ่มให้กับ ${selectedCustomer!['name']}")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Order ได้ถูกเพิ่มให้กับ ${selectedCustomer!['name']}",
+                          ),
+                        ),
+                      );
                       Navigator.of(context).pop();
                     }
                   },
@@ -193,7 +207,8 @@ class _StoreFinderState extends State<StoreFinder> {
       const double earthRadiusKm = 6371.0;
 
       final double deltaLat = (distanceKm / earthRadiusKm) * (180 / pi);
-      final double deltaLng = deltaLat / cos(currentPosition!.latitude * pi / 180);
+      final double deltaLng =
+          deltaLat / cos(currentPosition!.latitude * pi / 180);
 
       final double newLat = currentPosition!.latitude + deltaLat * sin(angle);
       final double newLng = currentPosition!.longitude + deltaLng * cos(angle);
@@ -202,7 +217,8 @@ class _StoreFinderState extends State<StoreFinder> {
         "name": "Store ${String.fromCharCode(65 + i)}",
         "latitude": newLat,
         "longitude": newLng,
-        "storeAddress": "Lat: ${newLat.toStringAsFixed(5)}, Lng: ${newLng.toStringAsFixed(5)}",
+        "storeAddress":
+            "Lat: ${newLat.toStringAsFixed(5)}, Lng: ${newLng.toStringAsFixed(5)}",
         "active": true,
         "isOpen": true,
       });
@@ -230,7 +246,8 @@ class _StoreFinderState extends State<StoreFinder> {
       // คำนวณการเปลี่ยนแปลงตำแหน่ง
       const double earthRadiusKm = 6371.0;
       final double deltaLat = (distanceKm / earthRadiusKm) * (180 / pi);
-      final double deltaLng = deltaLat / cos(currentPosition!.latitude * pi / 180);
+      final double deltaLng =
+          deltaLat / cos(currentPosition!.latitude * pi / 180);
 
       final double newLat = currentPosition!.latitude + deltaLat * sin(angle);
       final double newLng = currentPosition!.longitude + deltaLng * cos(angle);
@@ -239,7 +256,8 @@ class _StoreFinderState extends State<StoreFinder> {
         "name": "Customer ${String.fromCharCode(65 + i)}",
         "latitude": newLat,
         "longitude": newLng,
-        "address": "Lat: ${newLat.toStringAsFixed(5)}, Lng: ${newLng.toStringAsFixed(5)}",
+        "address":
+            "Lat: ${newLat.toStringAsFixed(5)}, Lng: ${newLng.toStringAsFixed(5)}",
         "active": true,
       });
     }
@@ -272,7 +290,10 @@ class _StoreFinderState extends State<StoreFinder> {
       if (point.longitude > maxLng) maxLng = point.longitude;
     }
 
-    LatLngBounds bounds = LatLngBounds(southwest: LatLng(minLat, minLng), northeast: LatLng(maxLat, maxLng));
+    LatLngBounds bounds = LatLngBounds(
+      southwest: LatLng(minLat, minLng),
+      northeast: LatLng(maxLat, maxLng),
+    );
 
     mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
   }
@@ -283,8 +304,16 @@ class _StoreFinderState extends State<StoreFinder> {
     setState(() {});
   }
 
-  double calculateStoreToRiderDistance(Map<String, dynamic> store, Map<String, dynamic> rider) {
-    return _calculateDistance(store['latitude'], store['longitude'], rider['latitude'], rider['longitude']);
+  double calculateStoreToRiderDistance(
+    Map<String, dynamic> store,
+    Map<String, dynamic> rider,
+  ) {
+    return _calculateDistance(
+      store['latitude'],
+      store['longitude'],
+      rider['latitude'],
+      rider['longitude'],
+    );
   }
 
   Future<void> _getCurrentLocation() async {
@@ -314,8 +343,14 @@ class _StoreFinderState extends State<StoreFinder> {
       ImageConfiguration(size: Size(48, 48)),
       'assets/images/restaurant.png',
     );
-    driverMarkerIcon = await BitmapDescriptor.asset(ImageConfiguration(size: Size(48, 48)), 'assets/images/driver.png');
-    customerMarkerIcon = await BitmapDescriptor.asset(ImageConfiguration(size: Size(48, 48)), 'assets/images/here.png');
+    driverMarkerIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(size: Size(48, 48)),
+      'assets/images/driver.png',
+    );
+    customerMarkerIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(size: Size(48, 48)),
+      'assets/images/here.png',
+    );
   }
 
   // MARKER AND LOCATION ADDITIONAL FUNCTIONALITY
@@ -334,8 +369,13 @@ class _StoreFinderState extends State<StoreFinder> {
     canvas.drawCircle(Offset(center, center), 8, fillPaint);
     canvas.drawCircle(Offset(center, center), 8, strokePaint);
 
-    final ui.Image image = await pictureRecorder.endRecording().toImage(size.toInt(), size.toInt());
-    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final ui.Image image = await pictureRecorder.endRecording().toImage(
+      size.toInt(),
+      size.toInt(),
+    );
+    final ByteData? byteData = await image.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
     final Uint8List bytes = byteData!.buffer.asUint8List();
 
     // return BitmapDescriptor.fromBytes(bytes);
@@ -357,7 +397,10 @@ class _StoreFinderState extends State<StoreFinder> {
         Marker(
           markerId: MarkerId(item["name"]),
           position: LatLng(item["latitude"], item["longitude"]),
-          infoWindow: InfoWindow(title: item["name"], snippet: 'ระยะทาง: : ${distance.toStringAsFixed(2)} km'),
+          infoWindow: InfoWindow(
+            title: item["name"],
+            snippet: 'ระยะทาง: : ${distance.toStringAsFixed(2)} km',
+          ),
           icon: icon ?? BitmapDescriptor.defaultMarker,
         ),
       );
@@ -389,12 +432,21 @@ class _StoreFinderState extends State<StoreFinder> {
   }
 
   // Utility functions
-  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  double _calculateDistance(
+    double lat1,
+    double lon1,
+    double lat2,
+    double lon2,
+  ) {
     const double earthRadius = 6371;
     double dLat = _toRadians(lat2 - lat1);
     double dLon = _toRadians(lon2 - lon1);
     double a =
-        sin(dLat / 2) * sin(dLat / 2) + cos(_toRadians(lat1)) * cos(_toRadians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
+        sin(dLat / 2) * sin(dLat / 2) +
+        cos(_toRadians(lat1)) *
+            cos(_toRadians(lat2)) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
     return earthRadius * c;
   }
@@ -410,7 +462,10 @@ class _StoreFinderState extends State<StoreFinder> {
         circles.add(
           Circle(
             circleId: CircleId('currentLocationCircle'),
-            center: LatLng(currentPosition!.latitude, currentPosition!.longitude),
+            center: LatLng(
+              currentPosition!.latitude,
+              currentPosition!.longitude,
+            ),
             radius: 10000,
             fillColor: Colors.blue.withValues(alpha: 0.1),
             strokeColor: Colors.blue.withValues(alpha: 0.5),
@@ -423,7 +478,10 @@ class _StoreFinderState extends State<StoreFinder> {
           markers.add(
             Marker(
               markerId: MarkerId('currentLocationDot'),
-              position: LatLng(currentPosition!.latitude, currentPosition!.longitude),
+              position: LatLng(
+                currentPosition!.latitude,
+                currentPosition!.longitude,
+              ),
               icon: dotMarker!,
             ),
           );
@@ -432,7 +490,10 @@ class _StoreFinderState extends State<StoreFinder> {
         circles.add(
           Circle(
             circleId: CircleId('currentLocationCircle'),
-            center: LatLng(currentPosition!.latitude, currentPosition!.longitude),
+            center: LatLng(
+              currentPosition!.latitude,
+              currentPosition!.longitude,
+            ),
             radius: 10000,
             fillColor: Colors.blue.withValues(alpha: 0.1),
             strokeColor: Colors.blue.withValues(alpha: 0.5),
@@ -451,9 +512,13 @@ class _StoreFinderState extends State<StoreFinder> {
   }
 
   //API
-  void _assignOrderToRiderConfirmed(Map<String, dynamic> rider, List<Map<String, dynamic>> orders) {
+  void _assignOrderToRiderConfirmed(
+    Map<String, dynamic> rider,
+    List<Map<String, dynamic>> orders,
+  ) {
     // ดึงเฉพาะ order ที่ถูกรับ (accepted == true) จาก _newOrders
-    List<Map<String, dynamic>> acceptedOrders = _newOrders.where((order) => order["accepted"] == true).toList();
+    List<Map<String, dynamic>> acceptedOrders =
+        _newOrders.where((order) => order["accepted"] == true).toList();
 
     if (acceptedOrders.isEmpty) {
       logger.e("❌ No accepted orders, skipping polyline drawing.");
@@ -461,12 +526,15 @@ class _StoreFinderState extends State<StoreFinder> {
     }
 
     // check ลูกค้าทุก order ว่าเป็นคนเดียวกันไหม
-    Set<String> customerNames = acceptedOrders.map((order) => order["customerName"] as String).toSet();
+    Set<String> customerNames =
+        acceptedOrders.map((order) => order["customerName"] as String).toSet();
     if (customerNames.length > 1) {
       // if order จากลูกค้าหลายคน - แสดงแจ้งเตือน + block ประมวลผลเพิ่มเติม
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("ไม่สามารถรับออเดอร์จากลูกค้าหลายคนพร้อมกันได้")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("ไม่สามารถรับออเดอร์จากลูกค้าหลายคนพร้อมกันได้"),
+        ),
+      );
       return;
     }
 
@@ -521,7 +589,11 @@ class _StoreFinderState extends State<StoreFinder> {
   }
 
   //-->กลับมาใช้แบบเดิม
-  Future<void> _getRouteAndDrawWithWaypoints(LatLng start, LatLng end, List<LatLng> waypoints) async {
+  Future<void> _getRouteAndDrawWithWaypoints(
+    LatLng start,
+    LatLng end,
+    List<LatLng> waypoints,
+  ) async {
     String apiKey = await _getApiKey(); // ดึง API Key
 
     // logger.e("🔑 API Key: ${apiKey ?? 'NULL'}");
@@ -532,7 +604,9 @@ class _StoreFinderState extends State<StoreFinder> {
       return;
     }
 
-    String waypointsString = waypoints.map((point) => '${point.latitude},${point.longitude}').join('|');
+    String waypointsString = waypoints
+        .map((point) => '${point.latitude},${point.longitude}')
+        .join('|');
     String url =
         'https://maps.googleapis.com/maps/api/directions/json'
         '?origin=${start.latitude},${start.longitude}'
@@ -554,12 +628,20 @@ class _StoreFinderState extends State<StoreFinder> {
           var route = data['routes'][0];
           String polyline = route['overview_polyline']['points'];
           List<PointLatLng> result = PolylinePoints().decodePolyline(polyline);
-          List<LatLng> polylineCoordinates = result.map((point) => LatLng(point.latitude, point.longitude)).toList();
+          List<LatLng> polylineCoordinates =
+              result
+                  .map((point) => LatLng(point.latitude, point.longitude))
+                  .toList();
 
           setState(() {
             polylines.clear();
             polylines.add(
-              Polyline(polylineId: PolylineId('route'), points: polylineCoordinates, color: Colors.blue, width: 6),
+              Polyline(
+                polylineId: PolylineId('route'),
+                points: polylineCoordinates,
+                color: Colors.blue,
+                width: 6,
+              ),
             );
           });
 
@@ -601,7 +683,10 @@ class _StoreFinderState extends State<StoreFinder> {
           Stack(
             children: [
               IconButton(
-                icon: Icon(Icons.notifications, color: const ui.Color.fromARGB(255, 255, 190, 51)),
+                icon: Icon(
+                  Icons.notifications,
+                  color: const ui.Color.fromARGB(255, 255, 190, 51),
+                ),
                 onPressed: _showOrderNotifications,
               ),
               if (_notificationCount > 0)
@@ -610,11 +695,17 @@ class _StoreFinderState extends State<StoreFinder> {
                   top: 8,
                   child: Container(
                     padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     constraints: BoxConstraints(minWidth: 16, minHeight: 16),
                     child: Text(
                       '$_notificationCount',
-                      style: TextStyle(color: const ui.Color.fromARGB(255, 255, 255, 255), fontSize: 12),
+                      style: TextStyle(
+                        color: const ui.Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 12,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -634,7 +725,10 @@ class _StoreFinderState extends State<StoreFinder> {
                       mapController = controller;
                     },
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(currentPosition!.latitude, currentPosition!.longitude),
+                      target: LatLng(
+                        currentPosition!.latitude,
+                        currentPosition!.longitude,
+                      ),
                       zoom: 12,
                     ),
                     markers: markers,
@@ -667,20 +761,30 @@ class _StoreFinderState extends State<StoreFinder> {
                         ),
                         Visibility(
                           // visible: _newOrders.any((order) => order["accepted"] == true),
-                          visible: _newOrders.any((order) => order["accepted"] == true) && isApiKeyValid,
+                          visible:
+                              _newOrders.any(
+                                (order) => order["accepted"] == true,
+                              ) &&
+                              isApiKeyValid,
                           child: Column(
                             children: [
                               SizedBox(height: 10),
                               FloatingActionButton(
                                 onPressed: () async {
-                                  if (selectedRider != null && currentPosition != null) {
+                                  if (selectedRider != null &&
+                                      currentPosition != null) {
                                     LatLng riderLocation = LatLng(
                                       selectedRider!['latitude'],
                                       selectedRider!['longitude'],
                                     );
                                     // ดึงเฉพาะ order ที่ถูกรับ (accepted == true) จาก _newOrders
                                     List<Map<String, dynamic>> acceptedOrders =
-                                        _newOrders.where((order) => order["accepted"] == true).toList();
+                                        _newOrders
+                                            .where(
+                                              (order) =>
+                                                  order["accepted"] == true,
+                                            )
+                                            .toList();
 
                                     // ตรวจสอบว่า acceptedOrders มีข้อมูลหรือไม่
                                     if (acceptedOrders.isNotEmpty) {
@@ -688,7 +792,13 @@ class _StoreFinderState extends State<StoreFinder> {
                                       logger.e("❌ ไม่มี order ที่ถูก accept");
                                       ScaffoldMessenger.of(
                                         context,
-                                      ).showSnackBar(SnackBar(content: Text("ไม่มี order ที่ถูก accept")));
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            "ไม่มี order ที่ถูก accept",
+                                          ),
+                                        ),
+                                      );
                                     }
 
                                     // ใช้ order ที่รับแล้วตัวแรกเป็นปลายทางลูกค้า
@@ -700,14 +810,20 @@ class _StoreFinderState extends State<StoreFinder> {
                                     // ดึงพิกัดร้านที่เป็น waypoint
                                     List<LatLng> storeWaypoints =
                                         acceptedOrders.map((order) {
-                                          return LatLng(order['storeLatitude'], order['storeLongitude']);
+                                          return LatLng(
+                                            order['storeLatitude'],
+                                            order['storeLongitude'],
+                                          );
                                         }).toList();
 
                                     // ตรวจสอบว่า waypoints มีค่าหรือไม่
                                     String waypointsParam =
                                         storeWaypoints.isNotEmpty
                                             ? storeWaypoints
-                                                .map((point) => '${point.latitude},${point.longitude}')
+                                                .map(
+                                                  (point) =>
+                                                      '${point.latitude},${point.longitude}',
+                                                )
                                                 .join('/')
                                             : "";
 
@@ -718,7 +834,9 @@ class _StoreFinderState extends State<StoreFinder> {
                                         '${customerLocation.latitude},${customerLocation.longitude}/'
                                         '?travelmode=driving';
 
-                                    logger.i("🔗 Google Maps URL: $googleMapsUrl");
+                                    logger.i(
+                                      "🔗 Google Maps URL: $googleMapsUrl",
+                                    );
                                     logger.i(
                                       "✅ Rider Location: ${selectedRider?['latitude']}, ${selectedRider?['longitude']}",
                                     );
@@ -729,15 +847,23 @@ class _StoreFinderState extends State<StoreFinder> {
                                       "✅ Store Waypoints: ${storeWaypoints.map((w) => '${w.latitude},${w.longitude}').toList()}",
                                     );
 
-                                    if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
-                                      await launchUrl(Uri.parse(googleMapsUrl), mode: LaunchMode.externalApplication);
+                                    if (await canLaunchUrl(
+                                      Uri.parse(googleMapsUrl),
+                                    )) {
+                                      await launchUrl(
+                                        Uri.parse(googleMapsUrl),
+                                        mode: LaunchMode.externalApplication,
+                                      );
                                     } else {
                                       throw 'Could not open Google Maps.';
                                     }
                                   }
                                 },
                                 backgroundColor: Colors.blue,
-                                child: Icon(Icons.navigation, color: Colors.white),
+                                child: Icon(
+                                  Icons.navigation,
+                                  color: Colors.white,
+                                ),
                               ),
                             ],
                           ),
@@ -754,7 +880,13 @@ class _StoreFinderState extends State<StoreFinder> {
     if (currentPosition != null && mapController != null) {
       mapController!.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(currentPosition!.latitude, currentPosition!.longitude), zoom: 14),
+          CameraPosition(
+            target: LatLng(
+              currentPosition!.latitude,
+              currentPosition!.longitude,
+            ),
+            zoom: 14,
+          ),
         ),
       );
     }
@@ -773,19 +905,30 @@ class _StoreFinderState extends State<StoreFinder> {
                   children:
                       _newOrders.map((order) {
                         return Card(
-                          color: order["accepted"] == true ? Colors.green[100] : null,
+                          color:
+                              order["accepted"] == true
+                                  ? Colors.green[100]
+                                  : null,
                           child: Column(
                             children: [
                               ListTile(
-                                title: Text("Order ${order['orderId']} : ${order['storeName']}"),
+                                title: Text(
+                                  "Order ${order['orderId']} : ${order['storeName']}",
+                                ),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("ที่อยู่ร้าน: ${order['storeAddress']}"),
+                                    Text(
+                                      "ที่อยู่ร้าน: ${order['storeAddress']}",
+                                    ),
                                     if (order.containsKey("distanceFromRider"))
-                                      Text("ระยะทางร้าน-ไรเดอร์: ${order['distanceFromRider'].toStringAsFixed(2)} km"),
+                                      Text(
+                                        "ระยะทางร้าน-ไรเดอร์: ${order['distanceFromRider'].toStringAsFixed(2)} km",
+                                      ),
                                     Text("ลูกค้า: ${order['customerName']}"),
-                                    Text("ที่อยู่ลูกค้า: ${order['customerAddress']}"),
+                                    Text(
+                                      "ที่อยู่ลูกค้า: ${order['customerAddress']}",
+                                    ),
                                   ],
                                 ),
                               ),
@@ -793,66 +936,105 @@ class _StoreFinderState extends State<StoreFinder> {
                                   ? Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.check_circle, color: Colors.green),
+                                        Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                        ),
                                         SizedBox(width: 4),
                                         Text(
                                           "รับงานนี้แล้ว",
-                                          style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                          style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ],
                                     ),
                                   )
                                   : Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       IconButton(
-                                        icon: Icon(Icons.check, color: Colors.green),
+                                        icon: Icon(
+                                          Icons.check,
+                                          color: Colors.green,
+                                        ),
                                         onPressed: () {
                                           if (!isApiKeyValid) {
                                             ScaffoldMessenger.of(
                                               context,
-                                            ).showSnackBar(SnackBar(content: Text("กรุณาใส่ API Key ที่ถูกต้อง")));
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "กรุณาใส่ API Key ที่ถูกต้อง",
+                                                ),
+                                              ),
+                                            );
                                             return;
                                           }
 
                                           if (currentPosition != null) {
                                             // ตรวจสอบว่า order ที่จะรับมีลูกค้าตรงกันกับ order ที่ accept อยู่แล้วหรือไม่
-                                            List<Map<String, dynamic>> acceptedOrders =
-                                                _newOrders.where((o) => o["accepted"] == true).toList();
+                                            List<Map<String, dynamic>>
+                                            acceptedOrders =
+                                                _newOrders
+                                                    .where(
+                                                      (o) =>
+                                                          o["accepted"] == true,
+                                                    )
+                                                    .toList();
                                             // ถ้าไม่มี order ที่ accept อยู่ ให้สามารถรับ order นี้ได้เลย
                                             if (acceptedOrders.isNotEmpty) {
                                               Set<String> customerNames =
-                                                  acceptedOrders.map((o) => o["customerName"] as String).toSet();
-                                              if (customerNames.length > 0 &&
-                                                  !customerNames.contains(order["customerName"])) {
-                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  acceptedOrders
+                                                      .map(
+                                                        (o) =>
+                                                            o["customerName"]
+                                                                as String,
+                                                      )
+                                                      .toSet();
+                                              if (customerNames.isNotEmpty &&
+                                                  !customerNames.contains(
+                                                    order["customerName"],
+                                                  )) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
                                                   SnackBar(
-                                                    content: Text("ไม่สามารถรับออเดอร์จากลูกค้าหลายคนพร้อมกันได้"),
+                                                    content: Text(
+                                                      "ไม่สามารถรับออเดอร์จากลูกค้าหลายคนพร้อมกันได้",
+                                                    ),
                                                   ),
                                                 );
                                                 return;
                                               }
                                             }
 
-                                            double distanceFromRider = _calculateDistance(
-                                              currentPosition!.latitude,
-                                              currentPosition!.longitude,
-                                              order['storeLatitude'],
-                                              order['storeLongitude'],
-                                            );
+                                            double distanceFromRider =
+                                                _calculateDistance(
+                                                  currentPosition!.latitude,
+                                                  currentPosition!.longitude,
+                                                  order['storeLatitude'],
+                                                  order['storeLongitude'],
+                                                );
 
                                             setState(() {
                                               order["accepted"] = true;
-                                              order["distanceFromRider"] = distanceFromRider; // อัปเดตระยะทาง
+                                              order["distanceFromRider"] =
+                                                  distanceFromRider; // อัปเดตระยะทาง
                                             });
 
                                             // หลังจาก set accepted แล้ว เรียกฟังก์ชันการยืนยัน order
                                             _assignOrderToRiderConfirmed(
                                               {
-                                                'latitude': currentPosition!.latitude,
-                                                'longitude': currentPosition!.longitude,
+                                                'latitude':
+                                                    currentPosition!.latitude,
+                                                'longitude':
+                                                    currentPosition!.longitude,
                                               },
                                               [order],
                                             );
@@ -861,22 +1043,42 @@ class _StoreFinderState extends State<StoreFinder> {
                                           } else {
                                             ScaffoldMessenger.of(
                                               context,
-                                            ).showSnackBar(SnackBar(content: Text("กรุณาตรวจสอบตำแหน่งไรเดอร์")));
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "กรุณาตรวจสอบตำแหน่งไรเดอร์",
+                                                ),
+                                              ),
+                                            );
                                           }
                                         },
                                       ),
 
                                       IconButton(
-                                        icon: Icon(Icons.cancel, color: Colors.red),
+                                        icon: Icon(
+                                          Icons.cancel,
+                                          color: Colors.red,
+                                        ),
                                         onPressed: () {
                                           if (order["accepted"] == true) {
                                             ScaffoldMessenger.of(
                                               context,
-                                            ).showSnackBar(SnackBar(content: Text("ไม่สามารถยกเลิกงานที่รับแล้วได้")));
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "ไม่สามารถยกเลิกงานที่รับแล้วได้",
+                                                ),
+                                              ),
+                                            );
                                           } else {
                                             setState(() {
-                                              _newOrders.removeWhere((o) => o["orderId"] == order["orderId"]);
-                                              _notificationCount = _newOrders.length;
+                                              _newOrders.removeWhere(
+                                                (o) =>
+                                                    o["orderId"] ==
+                                                    order["orderId"],
+                                              );
+                                              _notificationCount =
+                                                  _newOrders.length;
                                             });
                                             setStateDialog(() {});
                                             if (_newOrders.isEmpty) {
@@ -921,7 +1123,12 @@ class _StoreFinderState extends State<StoreFinder> {
           (context) => AlertDialog(
             title: Text("⚠️ API Key Error"),
             content: Text(message),
-            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("OK"))],
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("OK"),
+              ),
+            ],
           ),
     );
   }

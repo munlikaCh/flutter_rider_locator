@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: StoreFinder(),  // ใช้ StoreFinder จาก package ของคุณ
+      home: StoreFinder(), // ใช้ StoreFinder จาก package ของคุณ
     );
   }
 }

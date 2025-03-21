@@ -2,12 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Upcoming]
+- ✨ **Customizable version** (`flutter_rider_locator_custom`)
+<!-- - 🛠 **Support for real order processing** (Optional) -->
+- 📌 More **customization options for markers and navigation**
+
+
+## [Version 1.0.2] : 2025-03-21
+### 🛠️ Changed
+- 🔄 Replaced **MIT License** with **Apache License** in the `LICENSE` file.
+
+### 🐞 Fixed
+- 🐛 Fixed **formatting issues** and addressed static analysis warnings (e.g., using `isNotEmpty` instead of `length`).
+
+
 ## [Version 1.0.1+1] : 2025-03-20
 ### 🛠️ Changed
 - 🔄 Fixed **LICENSE** issue by updating the license details.
 
 ### 🐞 Fixed
 - 🐛 Resolved **bug** and **formatting issues**
+
 
 ## [Version 1.0.0] : 2025-03-19
 ### 🎉 Initial Release
@@ -35,9 +50,4 @@ All notable changes to this project will be documented in this file.
 - 🐛 Fixed **order assignment bug** where some orders were not assigned correctly.
 
 --- -->
-
-## [Upcoming]
-- ✨ **Customizable version** (`flutter_rider_locator_custom`)
-<!-- - 🛠 **Support for real order processing** (Optional) -->
-- 📌 More **customization options for markers and navigation**
 
