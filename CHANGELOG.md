@@ -8,9 +8,17 @@ All notable changes to this project will be documented in this file.
 - 📌 More **customization options for markers and navigation**
 
 
-## [Version 1.0.2] : 2025-03-21
+## [Version 1.0.2+3] : 2025-03-21
 ### 🛠️ Changed
-- 🔄 Replaced **MIT License** with **Apache License** in the `LICENSE` file.
+- Fixed **LICENSE** issue by updating the license details.
+
+### 🐞 Fixed
+- 🐛 Fixed **formatting issues**
+
+
+## [Version 1.0.2+2] : 2025-03-21
+### 🛠️ Changed
+- Replaced **MIT License** with **Apache License** in the `LICENSE` file.
 
 ### 🐞 Fixed
 - 🐛 Fixed **formatting issues** and addressed static analysis warnings (e.g., using `isNotEmpty` instead of `length`).
@@ -18,7 +26,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Version 1.0.1+1] : 2025-03-20
 ### 🛠️ Changed
-- 🔄 Fixed **LICENSE** issue by updating the license details.
+- Fixed **LICENSE** issue by updating the license details.
 
 ### 🐞 Fixed
 - 🐛 Resolved **bug** and **formatting issues**
@@ -26,11 +34,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Version 1.0.0] : 2025-03-19
 ### 🎉 Initial Release
-- 🚀 Introduced **Flutter Rider Locator (basic)** package.
-- 🗺️ Integrated **Google Maps** for navigation and real-time tracking.
-- 🏪 Added **store & customer generation** within a **10 km radius**.
-- 📦 Implemented **mock order assignment** from stores to customers.
-- 📍 Custom markers for:
+- Introduced **Flutter Rider Locator (basic)** package.
+- Integrated **Google Maps** for navigation and real-time tracking.
+- Added **store & customer generation** within a **10 km radius**.
+- Implemented **mock order assignment** from stores to customers.
+- Custom markers for:
   - Riders (`driver.png`)
   - Stores (`restaurant.png`)
   - Customers (`here.png`)
@@ -40,9 +48,9 @@ All notable changes to this project will be documented in this file.
 ## [1.1.0] - YYYY-MM-DD (ตัวอย่างอัปเดตในอนาคต)
 ### 🆕 Added
 - 📍 **Dynamic location updates** for Riders.
-- 🔄 **Refresh button** to regenerate stores and customers.
+- **Refresh button** to regenerate stores and customers.
 
-### 🔄 Changed
+### Changed
 - 🛠️ Improved **route drawing accuracy** using Google Maps API.
 - ⚡ Optimized **performance for faster rendering**.
 
