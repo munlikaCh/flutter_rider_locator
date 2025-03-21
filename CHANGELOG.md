@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 - 📌 More **customization options for markers and navigation**
 
 
-## [Version 1.0.2+3] : 2025-03-21
+## [Version 1.1.0] : 2025-03-21
 ### 🛠️ Changed
 - Fixed **LICENSE** issue by updating the license details.
 
